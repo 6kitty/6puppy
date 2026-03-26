@@ -1,0 +1,11 @@
+users:
+- discord_channel_id: ''
+  email: ''
+  github_repo: 6kitty/6kitty.github.io
+  github_username: 6kitty
+  id: 6kitty
+  posts_path: _posts
+  reminder_day: 6
+  reminder_hour: 20
+  timezone: Asia/Seoul
+  weekly_reminder: true

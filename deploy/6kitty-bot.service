@@ -1,0 +1,20 @@
+[Unit]
+Description=육키티조수육퍼피 Discord Bot
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/6kitty-bot
+ExecStart=/home/ubuntu/6kitty-bot/venv/bin/python main.py
+Restart=always
+RestartSec=10
+EnvironmentFile=/home/ubuntu/6kitty-bot/.env
+
+# 로그
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=6kitty-bot
+
+[Install]
+WantedBy=multi-user.target
