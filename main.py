@@ -23,10 +23,8 @@ def run_webhook_server():
 
 
 async def main():
-    # Discord 봇이 ready 상태가 된 후 webhook 서버에 주입
-    @bot.event
-    async def on_ready_inject():
-        set_discord_bot(bot)
+    # 봇 객체를 webhook 서버에 즉시 주입 (연결 전이어도 참조만 넘기면 됨)
+    set_discord_bot(bot)
 
     # Webhook 서버를 별도 스레드에서 실행
     webhook_thread = threading.Thread(target=run_webhook_server, daemon=True)

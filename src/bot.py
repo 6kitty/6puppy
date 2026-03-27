@@ -26,8 +26,16 @@ class KittyBot(discord.Client):
 
     async def setup_hook(self):
         """봇 시작 시 슬래시 커맨드 동기화"""
-        await self.tree.sync()
-        print("[bot] 슬래시 커맨드 동기화 완료")
+        # 길드(서버) 즉시 동기화 - 글로벌은 최대 1시간 소요
+        guild_id = os.getenv("DISCORD_GUILD_ID")
+        if guild_id:
+            guild = discord.Object(id=int(guild_id))
+            self.tree.copy_global_to(guild=guild)
+            await self.tree.sync(guild=guild)
+            print(f"[bot] 슬래시 커맨드 길드 동기화 완료 (guild_id={guild_id})")
+        else:
+            await self.tree.sync()
+            print("[bot] 슬래시 커맨드 글로벌 동기화 완료 (최대 1시간 소요)")
 
     async def on_ready(self):
         print(f"[bot] {self.user} 로그인 완료!")
