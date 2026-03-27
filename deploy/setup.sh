@@ -13,15 +13,15 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install -y python3 python3-venv python3-pip git
 
 # 2. 프로젝트 클론 (또는 이미 있으면 pull)
-if [ -d "/home/ubuntu/6kitty-bot" ]; then
+if [ -d "/home/ubuntu/6puppy" ]; then
     echo "📦 기존 설치 감지 - git pull 실행"
-    cd /home/ubuntu/6kitty-bot
+    cd /home/ubuntu/6puppy
     git pull
 else
     echo "📦 프로젝트 클론"
     cd /home/ubuntu
-    git clone https://github.com/YOUR_USERNAME/6kitty-bot.git
-    cd 6kitty-bot
+    git clone https://github.com/6kitty/6puppy.git
+    cd 6puppy
 fi
 
 # 3. 가상환경 생성 및 패키지 설치
