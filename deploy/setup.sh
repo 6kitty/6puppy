@@ -1,7 +1,7 @@
 #!/bin/bash
 # ============================
 # 육키티조수육퍼피 OCI VM 초기 세팅 스크립트
-# Ubuntu 22.04 기준
+# Ubuntu 20.04/22.04 기준
 # ============================
 
 set -e
@@ -10,7 +10,7 @@ echo "🚀 육키티조수육퍼피 봇 설치 시작..."
 
 # 1. 시스템 패키지 업데이트
 sudo apt update && sudo apt upgrade -y
-sudo apt install -y python3.11 python3.11-venv python3-pip git
+sudo apt install -y python3 python3-venv python3-pip git
 
 # 2. 프로젝트 클론 (또는 이미 있으면 pull)
 if [ -d "/home/ubuntu/6kitty-bot" ]; then
@@ -25,7 +25,7 @@ else
 fi
 
 # 3. 가상환경 생성 및 패키지 설치
-python3.11 -m venv venv
+python3 -m venv venv
 source venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
