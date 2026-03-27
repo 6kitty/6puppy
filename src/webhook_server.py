@@ -116,10 +116,11 @@ async def _process_new_posts(file_paths: list, user_config: dict, repo: str):
             # 포스트 내용 가져오기
             title, content = await get_post_content(repo, file_path)
 
-            # URL 생성
+            # URL 생성 (유저별 permalink_format 적용)
             repo_name = repo.split("/")[1]
             author = user_config.get("github_username", "작성자")
-            url = build_post_url(author, repo_name, file_path)
+            permalink_format = user_config.get("permalink_format", "date")
+            url = build_post_url(author, repo_name, file_path, permalink_format)
 
             # Claude로 요약
             summary = await summarize_post(title, content, author)

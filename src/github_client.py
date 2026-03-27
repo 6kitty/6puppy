@@ -106,7 +106,7 @@ async def has_post_this_week(repo: str, posts_path: str) -> bool:
     return len(commits) > 0
 
 
-def build_post_url(github_username: str, repo_name: str, file_path: str) -> str:
+def build_post_url(github_username: str, repo_name: str, file_path: str, permalink_format: str = "date") -> str:
     """
     Jekyll 블로그 포스트 URL 생성
 
@@ -114,17 +114,31 @@ def build_post_url(github_username: str, repo_name: str, file_path: str) -> str:
         github_username: GitHub 유저명
         repo_name: 레포 이름 (e.g. "6kitty.github.io")
         file_path: 파일 경로 (e.g. "_posts/2026-03-25-weekly-review.md")
+        permalink_format: URL 형식 (config.yaml의 permalink_format)
+            - "date"   → /2026/03/27/WIL.html  (Jekyll 기본값)
+            - "pretty" → /2026/03/27/WIL/
+            - "title"  → /WIL/
+            - "none"   → /WIL  (날짜 없음, 확장자 없음)
 
     Returns:
-        "https://6kitty.github.io/weekly-review" 형태의 URL
+        완성된 포스트 URL
     """
     filename = file_path.split("/")[-1].replace(".md", "")
     parts = filename.split("-")
+    base_url = f"https://{repo_name}"
 
-    if len(parts) >= 4:
-        # YYYY-MM-DD-title 형식에서 날짜 제거
-        slug = "-".join(parts[3:])
-        base_url = f"https://{repo_name}"
+    if len(parts) < 4:
+        return base_url
+
+    year, month, day = parts[0], parts[1], parts[2]
+    slug = "-".join(parts[3:])
+
+    if permalink_format == "pretty":
+        return f"{base_url}/{year}/{month}/{day}/{slug}/"
+    elif permalink_format == "title":
+        return f"{base_url}/{slug}/"
+    elif permalink_format == "none":
         return f"{base_url}/{slug}"
-
-    return f"https://{repo_name}"
+    else:
+        # "date" — Jekyll 기본값: /:year/:month/:day/:title.html
+        return f"{base_url}/{year}/{month}/{day}/{slug}.html"

@@ -5,6 +5,7 @@ users:
   github_username: 6kitty
   id: 6kitty
   posts_path: _posts
+  permalink_format: date   # date=/:year/:month/:day/:title.html | pretty=/:year/:month/:day/:title/ | title=/:title/ | none=/:title
   reminder_day: 6
   reminder_hour: 20
   timezone: Asia/Seoul
