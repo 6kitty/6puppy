@@ -2,11 +2,6 @@
 # GitHub Actions 자동 배포
 # main 브랜치에 push 시 OCI VM에 자동 배포
 # ============================
-# 설정 방법:
-# GitHub repo → Settings → Secrets and variables → Actions 에서 아래 추가:
-# - OCI_HOST: VM의 공개 IP
-# - OCI_USER: ubuntu (또는 opc)
-# - OCI_SSH_KEY: VM 접속용 private key 내용 (-----BEGIN... 포함)
 
 name: Deploy to OCI
 
@@ -29,7 +24,7 @@ jobs:
           username: ${{ secrets.OCI_USER }}
           key: ${{ secrets.OCI_SSH_KEY }}
           script: |
-            cd /home/ubuntu/6kitty-bot
+            cd /home/ubuntu/6puppy
             git pull origin main
             source venv/bin/activate
             pip install -r requirements.txt --quiet
