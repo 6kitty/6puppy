@@ -2,6 +2,7 @@
 GitHub Webhook 수신 서버 (FastAPI)
 push 이벤트에서 _posts 디렉토리 변경 감지
 """
+from __future__ import annotations
 
 import os
 import hmac

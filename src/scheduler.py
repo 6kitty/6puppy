@@ -2,6 +2,7 @@
 주간 스케줄러
 매주 일요일 KST 20:00 - 회고 미작성 시 재촉 메시지 전송
 """
+from __future__ import annotations
 
 import os
 import discord

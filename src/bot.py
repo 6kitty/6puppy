@@ -2,6 +2,7 @@
 육키티조수육퍼피 Discord 봇 메인
 슬래시 커맨드: /add_account, /remove_account, /check_now, /help
 """
+from __future__ import annotations
 
 import os
 import discord

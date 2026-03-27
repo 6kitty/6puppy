@@ -3,6 +3,7 @@ GitHub API 클라이언트
 - 포스트 내용 가져오기
 - 이번 주 커밋 여부 확인
 """
+from __future__ import annotations
 
 import os
 import httpx

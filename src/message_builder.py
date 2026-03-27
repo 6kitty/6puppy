@@ -2,6 +2,7 @@
 디스코드 메시지 빌더
 지킬앤하이드 컨셉: 칭찬 모드(아침별점) / 재촉 모드(팩트 사이다)
 """
+from __future__ import annotations
 
 import discord
 from datetime import datetime

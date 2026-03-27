@@ -1,6 +1,7 @@
 """
 유저 설정 관리 (config.yaml CRUD)
 """
+from __future__ import annotations
 
 import yaml
 import os

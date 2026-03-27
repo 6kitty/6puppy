@@ -2,6 +2,7 @@
 Claude Haiku를 이용한 블로그 포스트 요약 모듈
 아침별점 스타일로 따뜻하게 요약
 """
+from __future__ import annotations
 
 import os
 import anthropic
