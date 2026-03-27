@@ -85,8 +85,15 @@ async def github_webhook(
         print(f"[webhook] 등록되지 않은 레포: {repo_full_name}")
         return {"status": "ignored", "reason": "repo not registered"}
 
-    # 비동기로 Discord 메시지 전송
-    asyncio.create_task(_process_new_posts(added_posts, user_config, repo_full_name))
+    # 봇의 이벤트 루프에서 Discord 메시지 전송
+    # (uvicorn과 discord.py는 별도 스레드/루프에서 실행됨)
+    if _discord_bot and _discord_bot.loop:
+        asyncio.run_coroutine_threadsafe(
+            _process_new_posts(added_posts, user_config, repo_full_name),
+            _discord_bot.loop
+        )
+    else:
+        asyncio.create_task(_process_new_posts(added_posts, user_config, repo_full_name))
 
     return {"status": "processing", "posts": added_posts}
 
