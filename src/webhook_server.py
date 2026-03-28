@@ -104,6 +104,10 @@ async def _process_new_posts(file_paths: list, user_config: dict, repo: str):
         print("[webhook] Discord 봇이 연결되지 않았습니다")
         return
 
+    # 블로그 배포 완료까지 3분 대기
+    print(f"[webhook] 배포 대기 중... 3분 후 알림 전송 ({repo})")
+    await asyncio.sleep(180)
+
     channel_id = int(user_config.get("discord_channel_id") or os.getenv("DISCORD_CHANNEL_ID"))
     channel = _discord_bot.get_channel(channel_id)
 
