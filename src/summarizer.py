@@ -42,13 +42,14 @@ def _load_keys() -> list[str]:
 
 
 class GeminiKeyPool:
-    def __init__(self, model_name: str = "gemini-2.0-flash-lite"):
+    def __init__(self, model_name: str = "models/gemini-2.0-flash-lite"):
         self._keys = _load_keys()
         self._pool = cycle(self._keys)
         self._lock = Lock()
         self._current = next(self._pool)
         self._exhausted: set[str] = set()
         self._model_name = model_name
+        logger.info(f"Gemini model set to: {self._model_name}")
 
     def _next_key(self) -> Optional[str]:
         with self._lock:
@@ -71,6 +72,7 @@ class GeminiKeyPool:
             current_key = self._current
 
             try:
+                logger.info("Gemini request start")
                 genai.configure(api_key=current_key)
                 response = genai.generate_text(
                     model=self._model_name,
@@ -78,7 +80,7 @@ class GeminiKeyPool:
                     temperature=0.2,
                     max_output_tokens=512,
                 )
-                print("[DEBUG] Gemini raw response:", response)
+                logger.debug("Gemini raw response: %s", response)
                 if hasattr(response, "text") and response.text:
                     return response.text.strip()
 
@@ -90,6 +92,7 @@ class GeminiKeyPool:
 
             except Exception as e:
                 err = str(e)
+                logger.error("Gemini request failed on key ending %s: %s", current_key[-6:], err)
 
                 # 🔥 Rate limit 대응
                 if any(x in err for x in ["429", "RESOURCE_EXHAUSTED", "quota", "rate limit"]):

@@ -10,9 +10,24 @@ echo "🚀 육키티조수육퍼피 봇 설치 시작..."
 
 # 1. 시스템 패키지 업데이트
 sudo apt update && sudo apt upgrade -y
-sudo apt install -y python3 python3-venv python3-pip git
+sudo apt install -y software-properties-common git
 
-# 2. 프로젝트 클론 (또는 이미 있으면 pull)
+# 2. Python 3.10 설치 및 선택
+PYTHON_CMD=python3
+if command -v python3.10 >/dev/null 2>&1; then
+    PYTHON_CMD=python3.10
+else
+    if grep -qE '^VERSION_ID="?20\.04"?' /etc/os-release 2>/dev/null; then
+        sudo add-apt-repository -y ppa:deadsnakes/ppa
+        sudo apt update
+        sudo apt install -y python3.10 python3.10-venv python3.10-distutils
+        PYTHON_CMD=python3.10
+    else
+        sudo apt install -y python3 python3-venv python3-pip
+    fi
+fi
+
+# 3. 프로젝트 클론 (또는 이미 있으면 pull)
 if [ -d "/home/ubuntu/6puppy" ]; then
     echo "📦 기존 설치 감지 - git pull 실행"
     cd /home/ubuntu/6puppy
@@ -24,8 +39,8 @@ else
     cd 6puppy
 fi
 
-# 3. 가상환경 생성 및 패키지 설치
-python3 -m venv venv
+# 4. 가상환경 생성 및 패키지 설치
+$PYTHON_CMD -m venv venv
 source venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt

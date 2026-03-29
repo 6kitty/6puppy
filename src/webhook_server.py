@@ -57,6 +57,7 @@ async def github_webhook(
 
     # push 이벤트만 처리
     if x_github_event != "push":
+        print(f"[webhook] 무시된 이벤트: {x_github_event}")
         return {"status": "ignored", "event": x_github_event}
 
     payload = await request.json()
@@ -67,6 +68,7 @@ async def github_webhook(
 
     # main 브랜치 push만 처리
     if ref not in ("refs/heads/main", "refs/heads/master"):
+        print(f"[webhook] 무시된 브랜치: {ref}")
         return {"status": "ignored", "reason": "not main branch"}
 
     # _posts에 추가된 파일 찾기
@@ -77,6 +79,7 @@ async def github_webhook(
                 added_posts.append(file_path)
 
     if not added_posts:
+        print(f"[webhook] 무시됨: _posts 변경 없음")
         return {"status": "ignored", "reason": "no new posts"}
 
     # 등록된 유저 찾기
@@ -88,11 +91,13 @@ async def github_webhook(
     # 봇의 이벤트 루프에서 Discord 메시지 전송
     # (uvicorn과 discord.py는 별도 스레드/루프에서 실행됨)
     if _discord_bot and _discord_bot.loop:
+        print(f"[webhook] 백그라운드 처리 예약: {repo_full_name} posts={added_posts}")
         asyncio.run_coroutine_threadsafe(
             _process_new_posts(added_posts, user_config, repo_full_name),
             _discord_bot.loop
         )
     else:
+        print(f"[webhook] 백그라운드 처리 즉시 실행: {repo_full_name} posts={added_posts}")
         asyncio.create_task(_process_new_posts(added_posts, user_config, repo_full_name))
 
     return {"status": "processing", "posts": added_posts}
