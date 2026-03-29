@@ -71,16 +71,18 @@ class GeminiKeyPool:
             current_key = self._current
 
             try:
-                
                 genai.configure(api_key=current_key)
-                model = genai.GenerativeModel(self._model_name)
-
-                response = model.generate_content(prompt)
+                response = genai.generate_text(
+                    model=self._model_name,
+                    prompt=prompt,
+                    temperature=0.2,
+                    max_output_tokens=512,
+                )
                 print("[DEBUG] Gemini raw response:", response)
                 if hasattr(response, "text") and response.text:
                     return response.text.strip()
 
-                # fallback
+                # fallback for older response shapes
                 try:
                     return response.candidates[0].content.parts[0].text.strip()
                 except Exception:

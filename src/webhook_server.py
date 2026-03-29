@@ -138,10 +138,15 @@ async def _process_new_posts(file_paths: list, user_config: dict, repo: str):
             )
 
             await channel.send(embed=embed)
-            print(f"[webhook] 알림 전송 완료: {title}")
+                    print(f"[webhook] 알림 전송 완료: {title}")
 
         except Exception as e:
             print(f"[webhook] 포스트 처리 오류 ({file_path}): {e}")
+
+
+@app.get("/")
+async def root():
+    return {"status": "ok", "message": "Webhook server is running", "bot_connected": _discord_bot is not None}
 
 
 @app.get("/health")
