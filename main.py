@@ -17,7 +17,7 @@ from src.webhook_server import app as webhook_app, set_discord_bot
 
 def run_webhook_server():
     """별도 스레드에서 FastAPI webhook 서버 실행"""
-    host = os.getenv("WEBHOOK_HOST", "0.0.0.0")
+    host = os.getenv("WEBHOOK_HOST", "127.0.0.1")
     port = int(os.getenv("WEBHOOK_PORT", "8080"))
     uvicorn.run(webhook_app, host=host, port=port, log_level="info")
 
@@ -29,7 +29,7 @@ async def main():
     # Webhook 서버를 별도 스레드에서 실행
     webhook_thread = threading.Thread(target=run_webhook_server, daemon=True)
     webhook_thread.start()
-    print(f"[main] Webhook 서버 시작: {os.getenv('WEBHOOK_HOST', '0.0.0.0')}:{os.getenv('WEBHOOK_PORT', '8080')}")
+    print(f"[main] Webhook 서버 시작: {os.getenv('WEBHOOK_HOST', '127.0.0.1')}:{os.getenv('WEBHOOK_PORT', '8080')}")
 
     # Discord 봇 실행
     token = os.getenv("DISCORD_BOT_TOKEN")
